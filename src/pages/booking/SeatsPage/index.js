@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import SeatsMap from '../../../features/booking/components/SeatsMap';
 import {
   Wrapper, Footer, SeatType, Button,
 } from './styles';
+import { setBookedSeatIds, setNextStep } from '../../../features/booking/bookingSlice';
 
 function SeatsPage() {
   const [selectedSeatIds, setSelectedSeatIds] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    if (selectedSeatIds.length > 0) {
+      dispatch(setBookedSeatIds(selectedSeatIds));
+      dispatch(setNextStep());
+    }
+  };
 
   return (
     <Wrapper className="d-flex flex-column justify-content-center align-items-center">
@@ -28,7 +39,13 @@ function SeatsPage() {
             <div className="text">Wybrane</div>
           </SeatType>
         </div>
-        <Button variant="outline-secondary" className="align-self-center">Rezerwuj</Button>
+        <Button
+          onClick={handleClick}
+          variant="outline-secondary"
+          className="align-self-center"
+        >
+          Rezerwuj
+        </Button>
       </Footer>
     </Wrapper>
   );
