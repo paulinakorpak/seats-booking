@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Container from './styles';
 import Seat from '../Seat';
 import fetchSeats from '../../bookingAPI';
@@ -7,9 +8,8 @@ import { getLastSeatCoords, suggestSeats } from './helpers';
 import Space from '../Space';
 import { selectSeatsNumber, selectAdjacentSeats } from '../../bookingSlice';
 
-function SeatsMap() {
+function SeatsMap({ selectedSeatIds, setSelectedSeatIds }) {
   const [seats, setSeats] = useState([]);
-  const [selectedSeatIds, setSelectedSeatIds] = useState([]);
 
   const seatsNumber = useSelector(selectSeatsNumber);
   const adjacentSeats = useSelector(selectAdjacentSeats);
@@ -78,3 +78,8 @@ function SeatsMap() {
 }
 
 export default SeatsMap;
+
+SeatsMap.propTypes = {
+  selectedSeatIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setSelectedSeatIds: PropTypes.func.isRequired,
+};
