@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Container from './styles';
 import Seat from '../Seat';
 import fetchSeats from '../../bookingAPI';
 import getLastSeatCoords from './helpers';
 import Space from '../Space';
+import { selectSeatsNumber } from '../../bookingSlice';
 
 function SeatsMap() {
   const [seats, setSeats] = useState([]);
+  const [selectedSeatIds, setSelectedSeatIds] = useState([]);
+
+  const seatsNumber = useSelector(selectSeatsNumber);
 
   useEffect(() => {
     fetchSeats()
@@ -14,6 +19,14 @@ function SeatsMap() {
         setSeats(data);
       });
   }, []);
+
+  const handleSeatClick = (id) => {
+    if (!selectedSeatIds.includes(id) && selectedSeatIds.length < seatsNumber) {
+      setSelectedSeatIds([...selectedSeatIds, id]);
+    } else {
+      setSelectedSeatIds(selectedSeatIds.filter((selectedSeatId) => selectedSeatId !== id));
+    }
+  };
 
   const gridContent = [];
   const [lastRow, lastCol] = getLastSeatCoords(seats);
@@ -26,9 +39,23 @@ function SeatsMap() {
       const seat = seats.find((item) => item.cords.x === col && item.cords.y === row);
 
       if (seat) {
-        rowContent.push(<Seat key={key} reserved={seat.reserved} />);
+        const selected = selectedSeatIds.includes(seat.id);
+
+        rowContent.push(
+          <Seat
+            key={key}
+            id={seat.id}
+            reserved={seat.reserved}
+            selected={selected}
+            handleSeatClick={handleSeatClick}
+          />,
+        );
       } else {
-        rowContent.push(<Space key={key} />);
+        rowContent.push(
+          <Space
+            key={key}
+          />,
+        );
       }
 
       key += 1;
