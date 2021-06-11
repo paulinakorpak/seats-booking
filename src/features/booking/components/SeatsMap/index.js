@@ -3,15 +3,18 @@ import { useSelector } from 'react-redux';
 import Container from './styles';
 import Seat from '../Seat';
 import fetchSeats from '../../bookingAPI';
-import getLastSeatCoords from './helpers';
+import { getLastSeatCoords, suggestSeats } from './helpers';
 import Space from '../Space';
-import { selectSeatsNumber } from '../../bookingSlice';
+import { selectSeatsNumber, selectAdjacentSeats } from '../../bookingSlice';
 
 function SeatsMap() {
   const [seats, setSeats] = useState([]);
   const [selectedSeatIds, setSelectedSeatIds] = useState([]);
 
   const seatsNumber = useSelector(selectSeatsNumber);
+  const adjacentSeats = useSelector(selectAdjacentSeats);
+
+  const [lastRow, lastCol] = getLastSeatCoords(seats);
 
   useEffect(() => {
     fetchSeats()
@@ -19,6 +22,10 @@ function SeatsMap() {
         setSeats(data);
       });
   }, []);
+
+  useEffect(() => {
+    setSelectedSeatIds(suggestSeats(seatsNumber, adjacentSeats, lastRow, lastCol, seats));
+  }, [seats]);
 
   const handleSeatClick = (id) => {
     if (!selectedSeatIds.includes(id) && selectedSeatIds.length < seatsNumber) {
@@ -29,7 +36,6 @@ function SeatsMap() {
   };
 
   const gridContent = [];
-  const [lastRow, lastCol] = getLastSeatCoords(seats);
 
   let key = 0;
   for (let row = lastRow; row >= 0; row -= 1) {
