@@ -4,16 +4,16 @@ import SeatsMap from '../../../features/booking/components/SeatsMap';
 import {
   Wrapper, Footer, SeatType, Button,
 } from './styles';
-import { setBookedSeatIds, setNextStep } from '../../../features/booking/bookingSlice';
+import { setBookedSeats, setNextStep } from '../../../features/booking/bookingSlice';
 
 function SeatsPage() {
-  const [selectedSeatIds, setSelectedSeatIds] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    if (selectedSeatIds.length > 0) {
-      dispatch(setBookedSeatIds(selectedSeatIds));
+    if (selectedSeats.length > 0) {
+      dispatch(setBookedSeats(selectedSeats));
       dispatch(setNextStep());
     }
   };
@@ -21,8 +21,8 @@ function SeatsPage() {
   return (
     <Wrapper className="d-flex flex-column justify-content-center align-items-center">
       <SeatsMap
-        selectedSeatIds={selectedSeatIds}
-        setSelectedSeatIds={setSelectedSeatIds}
+        selectedSeats={selectedSeats}
+        setSelectedSeats={setSelectedSeats}
       />
       <Footer className="d-flex">
         <div className="d-flex justify-content-between">

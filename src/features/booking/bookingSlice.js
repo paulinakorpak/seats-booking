@@ -5,7 +5,7 @@ const initialState = {
   step: bookingSteps[0],
   seatsNumber: 0,
   adjacentSeats: false,
-  bookedSeatIds: [],
+  bookedSeats: [],
 };
 
 export const bookingSlice = createSlice({
@@ -22,19 +22,19 @@ export const bookingSlice = createSlice({
     setAdjacentSeats: (state, action) => {
       state.adjacentSeats = action.payload;
     },
-    setBookedSeatIds: (state, action) => {
-      state.bookedSeatIds = action.payload;
+    setBookedSeats: (state, action) => {
+      state.bookedSeats = action.payload;
     },
   },
 });
 
 export const {
-  setNextStep, setSeatsNumber, setAdjacentSeats, setBookedSeatIds,
+  setNextStep, setSeatsNumber, setAdjacentSeats, setBookedSeats,
 } = bookingSlice.actions;
 
 export const selectStep = (state) => state.booking.step;
 export const selectSeatsNumber = (state) => state.booking.seatsNumber;
 export const selectAdjacentSeats = (state) => state.booking.adjacentSeats;
-export const selectBookedSeatIds = (state) => state.booking.bookedSeatIds;
+export const selectBookedSeats = (state) => state.booking.bookedSeats;
 
 export default bookingSlice.reducer;

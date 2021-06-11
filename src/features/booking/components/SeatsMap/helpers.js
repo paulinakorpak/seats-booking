@@ -14,14 +14,14 @@ export const suggestSeats = (seatsNumber, adjacentSeats, lastRow, lastCol, seats
       const firstSeat = seats.find((item) => item.cords.x === col && item.cords.y === row);
 
       if (firstSeat && !firstSeat.reserved) {
-        suggestedSeats.push(firstSeat.id);
+        suggestedSeats.push(firstSeat);
 
         if (adjacentSeats) {
           for (let next = col + 1; next < col + seatsNumber; next += 1) {
             const nextSeat = seats.find((item) => item.cords.x === next && item.cords.y === row);
 
             if (nextSeat && !nextSeat.reserved) {
-              suggestedSeats.push(nextSeat.id);
+              suggestedSeats.push(nextSeat);
             } else {
               col = next;
               suggestedSeats = [];

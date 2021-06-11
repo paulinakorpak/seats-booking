@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import Element from './styles';
 
 function Seat({
-  id, reserved, selected, handleSeatClick,
+  seat, selected, handleSeatClick,
 }) {
-  const reservedClass = reserved ? 'reserved' : '';
+  const reservedClass = seat.reserved ? 'reserved' : '';
   const selectedClass = selected ? 'selected' : '';
   const classNames = `${reservedClass} ${selectedClass}`;
 
   const handleClick = () => {
-    if (!reserved) {
-      handleSeatClick(id);
+    if (!seat.reserved) {
+      handleSeatClick(seat);
     }
   };
 
@@ -27,8 +27,7 @@ function Seat({
 export default Seat;
 
 Seat.propTypes = {
-  id: PropTypes.string.isRequired,
-  reserved: PropTypes.bool.isRequired,
+  seat: PropTypes.objectOf(PropTypes.any).isRequired,
   selected: PropTypes.bool.isRequired,
   handleSeatClick: PropTypes.func.isRequired,
 };

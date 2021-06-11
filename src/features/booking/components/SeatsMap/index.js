@@ -8,7 +8,7 @@ import { getLastSeatCoords, suggestSeats } from './helpers';
 import Space from '../Space';
 import { selectSeatsNumber, selectAdjacentSeats } from '../../bookingSlice';
 
-function SeatsMap({ selectedSeatIds, setSelectedSeatIds }) {
+function SeatsMap({ selectedSeats, setSelectedSeats }) {
   const [seats, setSeats] = useState([]);
 
   const seatsNumber = useSelector(selectSeatsNumber);
@@ -24,14 +24,16 @@ function SeatsMap({ selectedSeatIds, setSelectedSeatIds }) {
   }, []);
 
   useEffect(() => {
-    setSelectedSeatIds(suggestSeats(seatsNumber, adjacentSeats, lastRow, lastCol, seats));
+    setSelectedSeats(suggestSeats(seatsNumber, adjacentSeats, lastRow, lastCol, seats));
   }, [seats]);
 
-  const handleSeatClick = (id) => {
-    if (!selectedSeatIds.includes(id) && selectedSeatIds.length < seatsNumber) {
-      setSelectedSeatIds([...selectedSeatIds, id]);
+  const handleSeatClick = (seat) => {
+    const alreadySelected = selectedSeats.find((item) => item.id === seat.id);
+
+    if (!alreadySelected && selectedSeats.length < seatsNumber) {
+      setSelectedSeats([...selectedSeats, seat]);
     } else {
-      setSelectedSeatIds(selectedSeatIds.filter((selectedSeatId) => selectedSeatId !== id));
+      setSelectedSeats(selectedSeats.filter((item) => item.id !== seat.id));
     }
   };
 
@@ -45,13 +47,12 @@ function SeatsMap({ selectedSeatIds, setSelectedSeatIds }) {
       const seat = seats.find((item) => item.cords.x === col && item.cords.y === row);
 
       if (seat) {
-        const selected = selectedSeatIds.includes(seat.id);
+        const selected = selectedSeats.some((item) => item.id === seat.id);
 
         rowContent.push(
           <Seat
             key={key}
-            id={seat.id}
-            reserved={seat.reserved}
+            seat={seat}
             selected={selected}
             handleSeatClick={handleSeatClick}
           />,
@@ -80,6 +81,6 @@ function SeatsMap({ selectedSeatIds, setSelectedSeatIds }) {
 export default SeatsMap;
 
 SeatsMap.propTypes = {
-  selectedSeatIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setSelectedSeatIds: PropTypes.func.isRequired,
+  selectedSeats: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setSelectedSeats: PropTypes.func.isRequired,
 };
