@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {
   Form, Col, Row, Button,
 } from 'react-bootstrap';
-import { setSeatsNumber, setAdjacentSeats } from '../../bookingSlice';
+import { setNextStep, setSeatsNumber, setAdjacentSeats } from '../../bookingSlice';
 
 function SeatsForm() {
   const [number, setNumber] = useState('');
@@ -18,6 +18,7 @@ function SeatsForm() {
     if (number > 0) {
       dispatch(setSeatsNumber(number));
       dispatch(setAdjacentSeats(adjacent));
+      dispatch(setNextStep());
     }
 
     e.preventDefault();
