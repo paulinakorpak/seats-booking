@@ -4,6 +4,8 @@ import {
   Form, Col, Row, Button,
 } from 'react-bootstrap';
 import { setNextStep, setSeatsNumber, setAdjacentSeats } from '../../bookingSlice';
+import { setMessage, clearMessage } from '../../../message/messageSlice';
+import { NO_SEATS_NUMBER } from '../../../message/messageTypes';
 
 function SeatsForm() {
   const [number, setNumber] = useState('');
@@ -18,7 +20,10 @@ function SeatsForm() {
     if (number > 0) {
       dispatch(setSeatsNumber(number));
       dispatch(setAdjacentSeats(adjacent));
+      dispatch(clearMessage(NO_SEATS_NUMBER));
       dispatch(setNextStep());
+    } else {
+      dispatch(setMessage(NO_SEATS_NUMBER));
     }
 
     e.preventDefault();

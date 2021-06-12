@@ -6,16 +6,21 @@ import SeatsPage from '../pages/booking/SeatsPage';
 import SummaryPage from '../pages/booking/SummaryPage';
 import { selectStep } from '../features/booking/bookingSlice';
 import { FORM_STEP, MAP_STEP, SUMMARY_STEP } from '../features/booking/bookingSteps';
+import Message from '../features/message/components/Message';
 
 function App() {
   const step = useSelector(selectStep);
 
   return (
-    <Wrapper className="container-sm d-flex justify-content-center align-items-center">
-      { step === FORM_STEP && <FormPage /> }
-      { step === MAP_STEP && <SeatsPage /> }
-      { step === SUMMARY_STEP && <SummaryPage /> }
-    </Wrapper>
+    <>
+      <Message />
+
+      <Wrapper className="container-sm d-flex justify-content-center align-items-center">
+        { step === FORM_STEP && <FormPage /> }
+        { step === MAP_STEP && <SeatsPage /> }
+        { step === SUMMARY_STEP && <SummaryPage /> }
+      </Wrapper>
+    </>
   );
 }
 

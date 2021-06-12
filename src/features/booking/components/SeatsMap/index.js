@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Container from './styles';
 import Seat from '../Seat';
@@ -7,9 +7,13 @@ import fetchSeats from '../../bookingAPI';
 import { getLastSeatCoords, suggestSeats } from './helpers';
 import Space from '../Space';
 import { selectSeatsNumber, selectAdjacentSeats } from '../../bookingSlice';
+import { setMessage, clearMessage } from '../../../message/messageSlice';
+import { ALL_SEATS_SELECTED, NO_SEATS_SELECTED, SUGGESTION_NOT_POSSIBLE } from '../../../message/messageTypes';
 
 function SeatsMap({ selectedSeats, setSelectedSeats }) {
   const [seats, setSeats] = useState([]);
+
+  const dispatch = useDispatch();
 
   const seatsNumber = useSelector(selectSeatsNumber);
   const adjacentSeats = useSelector(selectAdjacentSeats);
@@ -24,17 +28,32 @@ function SeatsMap({ selectedSeats, setSelectedSeats }) {
   }, []);
 
   useEffect(() => {
-    setSelectedSeats(suggestSeats(seatsNumber, adjacentSeats, lastRow, lastCol, seats));
+    if (seats.length > 0) {
+      const suggestedSeats = suggestSeats(seatsNumber, adjacentSeats, lastRow, lastCol, seats);
+      setSelectedSeats(suggestedSeats);
+
+      if (suggestedSeats.length === 0) {
+        dispatch(setMessage(SUGGESTION_NOT_POSSIBLE));
+      }
+    }
   }, [seats]);
 
   const handleSeatClick = (seat) => {
     const alreadySelected = selectedSeats.find((item) => item.id === seat.id);
 
-    if (!alreadySelected && selectedSeats.length < seatsNumber) {
-      setSelectedSeats([...selectedSeats, seat]);
+    if (!alreadySelected) {
+      if (selectedSeats.length < seatsNumber) {
+        setSelectedSeats([...selectedSeats, seat]);
+      } else {
+        dispatch(setMessage(ALL_SEATS_SELECTED));
+      }
     } else {
       setSelectedSeats(selectedSeats.filter((item) => item.id !== seat.id));
+      dispatch(clearMessage(ALL_SEATS_SELECTED));
     }
+
+    dispatch(clearMessage(NO_SEATS_SELECTED));
+    dispatch(clearMessage(SUGGESTION_NOT_POSSIBLE));
   };
 
   const gridContent = [];

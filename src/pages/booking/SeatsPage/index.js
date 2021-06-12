@@ -5,6 +5,8 @@ import {
   Wrapper, Footer, SeatType, Button,
 } from './styles';
 import { setBookedSeats, setNextStep } from '../../../features/booking/bookingSlice';
+import { setMessage } from '../../../features/message/messageSlice';
+import { NO_SEATS_SELECTED } from '../../../features/message/messageTypes';
 
 function SeatsPage() {
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -15,6 +17,8 @@ function SeatsPage() {
     if (selectedSeats.length > 0) {
       dispatch(setBookedSeats(selectedSeats));
       dispatch(setNextStep());
+    } else {
+      dispatch(setMessage(NO_SEATS_SELECTED));
     }
   };
 
