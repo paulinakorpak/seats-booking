@@ -45,6 +45,7 @@ function SeatsForm() {
             placeholder="0"
             type="number"
             className="w-100"
+            data-test="seats-number-input"
           />
         </Col>
       </Form.Group>
@@ -55,10 +56,15 @@ function SeatsForm() {
           onChange={handleAdjacentChange}
           type="checkbox"
           label="Czy miejsca mają być obok siebie?"
+          data-test="seats-adjacent-checkbox"
         />
       </Form.Group>
 
-      <Button type="submit" variant="outline-dark">
+      <Button
+        type="submit"
+        variant="outline-dark"
+        data-test="seats-form-submit"
+      >
         Wybierz miejsca
       </Button>
     </Form>

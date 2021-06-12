@@ -23,7 +23,10 @@ function SeatsPage() {
   };
 
   return (
-    <Wrapper className="d-flex flex-column justify-content-center align-items-center">
+    <Wrapper
+      className="d-flex flex-column justify-content-center align-items-center"
+      data-test="seats-map"
+    >
       <SeatsMap
         selectedSeats={selectedSeats}
         setSelectedSeats={setSelectedSeats}
@@ -47,6 +50,7 @@ function SeatsPage() {
           onClick={handleClick}
           variant="outline-secondary"
           className="align-self-center"
+          data-test="seats-page-submit"
         >
           Rezerwuj
         </Button>

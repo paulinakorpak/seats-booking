@@ -9,7 +9,10 @@ function SeatsSummary() {
   return (
     <>
       <h4 className="text-center text-uppercase text-secondary">wybrane miejsca:</h4>
-      <ListGroup className="mt-2 w-75">
+      <ListGroup
+        className="mt-2 w-75"
+        data-test="seats-summary"
+      >
         {
           bookedSeats.map((seat) => (
             <ListGroup.Item

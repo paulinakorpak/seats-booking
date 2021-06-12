@@ -11,7 +11,11 @@ function Message() {
   }
 
   return (
-    <Alert className="text-center position-fixed w-100" variant={message.type}>
+    <Alert
+      className="text-center position-fixed w-100"
+      variant={message.type}
+      data-test="alert"
+    >
       {message.content}
     </Alert>
   );
